@@ -13,6 +13,9 @@ namespace MiJuegoUno
         byte green;
         byte blue;
 
+        int positionX;
+        int positionY;
+
         Texture2D spaceShip;
 
         public Game1()
@@ -30,8 +33,12 @@ namespace MiJuegoUno
         {
             // TODO: Add your initialization logic here
             red = 100;
-            blue = 250;
             green = 20;
+            blue = 250;
+
+            positionX = 300;
+            positionY = 250;
+
             base.Initialize();
         }
 
@@ -62,7 +69,7 @@ namespace MiJuegoUno
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
 
-            _spriteBatch.Draw(spaceShip, new Vector2(300,250), Color.White);
+            _spriteBatch.Draw(spaceShip, new Vector2(positionX,positionY), Color.White);
 
             _spriteBatch.End();
 
