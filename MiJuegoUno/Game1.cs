@@ -9,14 +9,13 @@ namespace MiJuegoUno
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        byte red;
-        byte green;
-        byte blue;
+        bool visibleF;
 
-        int positionX;
-        int positionY;
+        Texture2D spaceShip;//Almacena en memoria la imagen
+        Texture2D Fireball;
 
-        Texture2D spaceShip;
+        Rectangle fireballRectangle;//Para controlar el tamaño
+        Rectangle spaceshipRectangle;
 
         public Game1()
         {
@@ -32,12 +31,11 @@ namespace MiJuegoUno
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            red = 100;
-            green = 20;
-            blue = 250;
 
-            positionX = 300;
-            positionY = 250;
+
+            visibleF = false;
+            fireballRectangle = new Rectangle(0, 0, 50, 50);
+            spaceshipRectangle = new Rectangle(300, 350, 200, 250);
 
             base.Initialize();
         }
@@ -48,6 +46,8 @@ namespace MiJuegoUno
 
             // TODO: use this.Content to load your game content here
             spaceShip = this.Content.Load<Texture2D>("Spaceship");
+
+            Fireball = this.Content.Load<Texture2D>("Fireball");
         }
 
         protected override void Update(GameTime gameTime)
@@ -64,11 +64,23 @@ namespace MiJuegoUno
 
             if (KeysState.IsKeyDown(Keys.Left))
             {
-                positionX -= 3;
+                spaceshipRectangle.X -= 3;
             }
             else if (KeysState.IsKeyDown(Keys.Right))
             {
-                positionX += 3;
+                spaceshipRectangle.X += 3;
+            }
+
+            if (KeysState.IsKeyDown(Keys.Space))
+            {
+                visibleF = true;//visibleF = !visibleF (Para hacer aparecer y desaparecer cada vez que oprima la barra espaceadora)
+                fireballRectangle.X = spaceshipRectangle.X + (spaceshipRectangle.Width/2) -24;
+                fireballRectangle.Y = spaceshipRectangle.Y + 10;
+            }
+
+            if(visibleF)
+            {
+                fireballRectangle.Y-=5;
             }
 
             base.Update(gameTime);
@@ -76,13 +88,17 @@ namespace MiJuegoUno
 
         protected override void Draw(GameTime gameTime)
         {
+            //Assets formato xnb
             //GraphicsDevice.Clear(new Color(red,green,blue));
             GraphicsDevice.Clear(Color.Black);
             // TODO: Add your drawing code here
-            _spriteBatch.Begin();
+            _spriteBatch.Begin();//SpriteBatch es la máquina de dibujo
 
-            _spriteBatch.Draw(spaceShip, new Vector2(positionX,positionY), Color.White);
-
+            if(visibleF)
+            {
+                _spriteBatch.Draw(Fireball, fireballRectangle, Color.White);
+            }
+            _spriteBatch.Draw(spaceShip, spaceshipRectangle, Color.White);
             _spriteBatch.End();
 
             base.Draw(gameTime);
